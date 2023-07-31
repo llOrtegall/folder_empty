@@ -1,10 +1,11 @@
-const express = require('express');
-const dotennv = require('dotenv')
-const mongoose = require('mongoose');
-const jwt = require('jsonwebtoken');
-const User = require('./models/User');
+import express from "express";
+import dotenv from "dotenv";
+import mongoose from "mongoose";
+import jwt from "jsonwebtoken";
+import { User } from "./models/User.js";
 
-dotennv.config();
+
+dotenv.config();
 mongoose.connect(process.env.MONGO_URL);
 const jwtSecret = process.env.JWT_SECRET;
 
