@@ -3,10 +3,9 @@ import Register from "./Register";
 import { UserContext } from "./UserContext";
 
 export default function Routes() {
-  const { username, id } = useContext(UserContext);
-  console.log(id)
+  const { username } = useContext(UserContext);
   if (username) {
-    return 'logging in';
+    return 'logging in' + username;
   }
   return (
     <Register />
