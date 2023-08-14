@@ -12,6 +12,9 @@ const jwtSecret = process.env.JWT_SECRET;
 
 const PORT = 4040
 const app = express();
+
+app.use(express.json());
+
 app.use(cors({
   credentials: true,
   origin: process.env.CLIENT_URL,
@@ -25,13 +28,20 @@ app.post('/register', async (req, res) => {
 
   // ?? CREANDO EL USUARIO
   const { username, password } = req.body;
-  const createUser = await User.create({ username, password });
+  try {
+    const createUser = await User.create({ username, password });
+    jwt.sign({ userId: createUser._id }, jwtSecret, {}, (err, token) => {
+      if (err) throw err
+      res.cookie('token', token).status(201).json('Ok User Create')
+    })
+  } catch (err) {
+    if (err) throw err
+    res.status(500).json('error')
+  }
+
 
   //* Creamos el TOKEN
-  jwt.sign({ userId: createUser._id }, jwtSecret, (err, token) => {
-    if (err) throw err
-    res.cookie('token', token).status(201).json('Ok User Create')
-  })
+
 })
 
 console.log('Inicializado en el servidor: ' + PORT);
