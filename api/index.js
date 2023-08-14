@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
 const User = require('./models/User.js');
+const cors = require('cors');
 
 dotenv.config();
 // ** CONECTA CON BASE DE DATOS
@@ -11,6 +12,10 @@ const jwtSecret = process.env.JWT_SECRET;
 
 const PORT = 4040
 const app = express();
+app.use(cors({
+  credentials: true,
+  origin: process.env.CLIENT_URL,
+}));
 
 app.get('/test', (req, res) => {
   res.json('test ok ¡¡¡')

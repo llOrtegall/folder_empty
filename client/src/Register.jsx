@@ -6,8 +6,9 @@ export function Register() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  function register() {
-    axios()
+  async function register(ev) {
+    ev.preventDefault();
+    const { data } = await axios.post('/register', { username, password });
   }
 
   return (
