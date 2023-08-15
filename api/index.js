@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
 const User = require('./models/User.js');
@@ -14,6 +15,7 @@ const PORT = 4040
 const app = express();
 
 app.use(express.json());
+app.use(cookieParser());
 
 app.use(cors({
   credentials: true,
@@ -32,7 +34,7 @@ app.get('/profile', (req, res) => {
       res.json(userData)
     })
   } else {
-    res.status(422).json('no token found')
+    res.status(401).json('no token found')
   }
 });
 
