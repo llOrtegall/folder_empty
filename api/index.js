@@ -30,6 +30,7 @@ app.post('/register', async (req, res) => {
   const { username, password } = req.body;
   try {
     const createUser = await User.create({ username, password });
+    //* Creamos el TOKEN
     jwt.sign({ userId: createUser._id }, jwtSecret, {}, (err, token) => {
       if (err) throw err
       res.cookie('token', token).status(201).json({
@@ -42,7 +43,6 @@ app.post('/register', async (req, res) => {
   }
 
 
-  //* Creamos el TOKEN
 
 })
 
