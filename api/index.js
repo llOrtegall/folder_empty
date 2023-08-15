@@ -34,7 +34,7 @@ app.post('/register', async (req, res) => {
     jwt.sign({ userId: createUser._id }, jwtSecret, {}, (err, token) => {
       if (err) throw err
       res.cookie('token', token).status(201).json({
-        _id: createUser._id,
+        id: createUser._id,
       })
     })
   } catch (err) {
