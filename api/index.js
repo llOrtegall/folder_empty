@@ -24,6 +24,18 @@ app.get('/test', (req, res) => {
   res.json('test ok ¡¡¡')
 })
 
+app.get('/profile', (req, res) => {
+  const token = req.cookies?.token;
+  if (token) {
+    jwt.verify(token, jwtSecret, {}, (err, userData) => {
+      if (err) throw err;
+      res.json(userData)
+    })
+  } else {
+    res.status(422).json('no token found')
+  }
+});
+
 app.post('/register', async (req, res) => {
 
   // ?? CREANDO EL USUARIO
@@ -35,6 +47,7 @@ app.post('/register', async (req, res) => {
       if (err) throw err
       res.cookie('token', token).status(201).json({
         id: createUser._id,
+        username
       })
     })
   } catch (err) {
