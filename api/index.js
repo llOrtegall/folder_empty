@@ -3,13 +3,15 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
-const User = require('./models/User.js');
 const cors = require('cors');
+const bcrypt = require('bcryptjs');
+const User = require('./models/User.js');
 
 dotenv.config();
 // ** CONECTA CON BASE DE DATOS
 mongoose.connect(process.env.MONGO_URL);
 const jwtSecret = process.env.JWT_SECRET;
+const bcryptSalt = bcrypt.genSaltSync(10);
 
 const PORT = 4040
 const app = express();
@@ -38,13 +40,31 @@ app.get('/profile', (req, res) => {
   }
 });
 
+app.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+  const foundUser = await User.findOne({ username: username });
 
+  if (foundUser) {
+    const passOk = bcrypt.compareSync(password, foundUser.password);
+    if (passOk) {
+      jwt.sign({ userId: foundUser.createUser._id, username }, jwtSecret, {}, (err, token) => {
+        res.cookie('token', token).json({
+          id: foundUser._id,
+        });
+      });
+    }
+  }
+});
 
 app.post('/register', async (req, res) => {
   // ?? CREANDO EL USUARIO
   const { username, password } = req.body;
   try {
-    const createUser = await User.create({ username, password });
+    const hashedPassword = bcrypt.hashSync(password, bcryptSalt)
+    const createUser = await User.create({
+      username: username,
+      password: hashedPassword,
+    })
     //* Creamos el TOKEN
     jwt.sign({ userId: createUser._id, username }, jwtSecret, {}, (err, token) => {
       if (err) throw err
@@ -60,4 +80,3 @@ app.post('/register', async (req, res) => {
 
 console.log('Inicializado en el servidor: ' + PORT);
 app.listen(PORT);
-
