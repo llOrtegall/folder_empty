@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const User = require('./models/User.js');
+const ws = require('ws');
 
 dotenv.config();
 // ** CONECTA CON BASE DE DATOS
@@ -79,4 +80,9 @@ app.post('/register', async (req, res) => {
 })
 
 console.log('Inicializado en el servidor: ' + PORT);
-app.listen(PORT);
+const server = app.listen(PORT);
+
+const wss = new ws.WebSocketServer({ server });
+wss.on('connection', (connection) => {
+  console.log('Connected');
+})
