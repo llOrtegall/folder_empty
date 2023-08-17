@@ -3,7 +3,7 @@ import { RegisterAndLoginForm } from "./RegisterAndLoginForm";
 import { UserContext } from "./UserContext";
 
 export function Routes() {
-  const { username, id } = useContext(UserContext);
+  const { username } = useContext(UserContext);
 
   if (username) {
     return 'logged in ¡¡' + username
