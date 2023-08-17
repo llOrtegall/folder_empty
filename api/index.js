@@ -38,8 +38,6 @@ app.get('/profile', (req, res) => {
   }
 });
 
-
-
 app.post('/register', async (req, res) => {
   // ?? CREANDO EL USUARIO
   const { username, password } = req.body;
