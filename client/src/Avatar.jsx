@@ -1,3 +1,4 @@
+// eslint-disable-next-line react/prop-types
 export function Avatar({ userId, username }) {
 
   const colors = [
@@ -11,7 +12,7 @@ export function Avatar({ userId, username }) {
 
   return (
     <div className={`w-8 h-8 rounded-full flex items-center ${color}`}>
-      <div className="text-center w-full opacity-70">{username[0]}</div>
+      <div className="text-center w-full opacity-70 uppercase font-bold">{username[0]}</div>
     </div>
   )
 }
