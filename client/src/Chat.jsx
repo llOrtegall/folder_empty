@@ -10,8 +10,9 @@ export function Chat() {
     ws.addEventListener('message', handleMessage)
   }, [])
 
-  function handleMessage(e) {
-    console.log('new message received', e)
+  function handleMessage(ev) {
+    const messageData = JSON.parse(ev.data);
+    console.log(messageData)
   }
 
   return (
