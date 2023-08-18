@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
+import { UserContext } from "./UserContext";
 import { Avatar } from "./Avatar"
 import { Logo } from "./Logo"
 
 export function Chat() {
 
-  const [ws, setWs] = useState(null)
-  const [onlinePeople, setOnlinePeople] = useState({})
-  const [selectUserId, setSelectUserId] = useState(null)
+  const [ws, setWs] = useState(null);
+  const [onlinePeople, setOnlinePeople] = useState({});
+  const [selectUserId, setSelectUserId] = useState(null);
+  const { username, id } = useContext(UserContext);
 
   console.log(ws)
 
@@ -29,16 +31,17 @@ export function Chat() {
     if ('online' in messageData) {
       showOnlinePeopple(messageData.online);
     }
-
-
   }
+
+  const onlinePeopleExclOurUser = { ...onlinePeople };
+  delete onlinePeopleExclOurUser[id]
+
   return (
     <div className="flex h-screen">
       <div className="bg-white w-1/3 ">
         <Logo />
-        {Object.keys(onlinePeople).map(userId => (
-          // eslint-disable-next-line react/jsx-key
-          <div onClick={() => setSelectUserId(userId)}
+        {Object.keys(onlinePeopleExclOurUser).map(userId => (
+          <div key={userId} onClick={() => setSelectUserId(userId)}
             className={`border-b border-gray-100 py-2 pl-4  flex items-center gap-2 cursor-pointer ${userId === selectUserId ? "bg-blue-400" : ''}`}>
             <Avatar username={onlinePeople[userId]} userId={userId} />
             <span className="text-gray-900 font-semibold">{onlinePeople[userId]}</span>
