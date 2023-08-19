@@ -10,7 +10,7 @@ export function Chat() {
   const [selectUserId, setSelectUserId] = useState(null);
   const { username, id } = useContext(UserContext);
 
-  console.log(ws)
+  console.log(ws, username)
 
   useEffect(() => {
     const ws = new WebSocket('ws://localhost:4040')
@@ -56,7 +56,11 @@ export function Chat() {
 
       <div className="flex flex-col bg-blue-50 w-2/3 p-2">
         <div className="flex-grow">
-          mensajes para leccionar personas
+          {!selectUserId && (
+            <div className="flex h-full flex-grow items-center justify-center">
+              <div className="text-gray-400">&larr; Seleccione Un Chat</div>
+            </div>
+          )}
         </div>
         <div className="flex gap-2">
           <input type="text" className="bg-white border rounded-md p-2 flex-grow"
