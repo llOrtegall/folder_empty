@@ -85,7 +85,7 @@ const server = app.listen(PORT);
 const wss = new ws.WebSocketServer({ server });
 wss.on('connection', (connection, req) => {
 
-  // TODO: mediante la cookie trae el usuario y el id
+  // * mediante la cookie trae el usuario y el id
   const cookies = req.headers.cookie;
   if (cookies) {
     const tokenCookieString = cookies.split(';').find(str => str.startsWith('token='));
@@ -102,6 +102,11 @@ wss.on('connection', (connection, req) => {
     }
   }
 
+  connection.on('message', (message) => {
+    console.log(message);
+  });
+
+  // * Notifica cuando las personas están en linea
   [...wss.clients].forEach(client => {
     client.send(JSON.stringify({
       online: [...wss.clients].map(c => ({ userId: c.userId, username: c.username }))
