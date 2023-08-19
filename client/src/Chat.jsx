@@ -42,9 +42,9 @@ export function Chat() {
         <Logo />
         {Object.keys(onlinePeopleExclOurUser).map(userId => (
           <div key={userId} onClick={() => setSelectUserId(userId)}
-            className={`border-b border-gray-100 flex items-center gap-2 cursor-pointer ${userId === selectUserId ? "bg-blue-400" : ''}`}>
+            className={`border-b border-gray-100 flex items-center gap-2 cursor-pointer ${userId === selectUserId ? "bg-blue-200" : ''}`}>
             {userId === selectUserId && (
-              <div className="border-b border-gray-100 w-1 bg-blue-500 h-12 rounded-r-md"></div>
+              <div className="border-b border-gray-100 w-1 bg-blue-600 h-12 rounded-r-md"></div>
             )}
             <div className="flex gap-2 py-2 pl-4 items-center">
               <Avatar username={onlinePeople[userId]} userId={userId} />
@@ -54,7 +54,7 @@ export function Chat() {
         ))}
       </div>
 
-      <div className="flex flex-col bg-blue-50 w-2/3 p-2">
+      <div className="flex flex-col bg-blue-100 w-2/3 p-2">
         <div className="flex-grow">
           {!selectUserId && (
             <div className="flex h-full flex-grow items-center justify-center">
