@@ -9,6 +9,7 @@ export function Chat() {
   const [onlinePeople, setOnlinePeople] = useState({});
   const [selectUserId, setSelectUserId] = useState(null);
   const { username, id } = useContext(UserContext);
+  const [messages, setMessages] = useState([]);
   const [newMessageText, setNewMessageText] = useState('')
 
   useEffect(() => {
@@ -40,6 +41,8 @@ export function Chat() {
       recipient: selectUserId,
       text: newMessageText,
     }));
+    setNewMessageText('');
+    setMessages(prev => ([...prev, { text: newMessageText, isOur: true }]));
   }
 
   const onlinePeopleExclOurUser = { ...onlinePeople };
@@ -68,6 +71,13 @@ export function Chat() {
           {!selectUserId && (
             <div className="flex h-full flex-grow items-center justify-center">
               <div className="text-gray-400">&larr; Seleccione Un Chat</div>
+            </div>
+          )}
+          {!!selectUserId && (
+            <div>
+              {messages.map(message => (
+                <div>{message.text}</div>
+              ))}
             </div>
           )}
         </div>
