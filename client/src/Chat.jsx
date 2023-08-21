@@ -28,10 +28,11 @@ export function Chat() {
 
   function handleMessage(ev) {
     const messageData = JSON.parse(ev.data);
+    console.log({ ev, messageData });
     if ('online' in messageData) {
       showOnlinePeopple(messageData.online);
     } else {
-      console.log({ messageData })
+      setMessages(prev => ([...prev], { isOur: false, text: messageData.text }));
     }
   }
 
