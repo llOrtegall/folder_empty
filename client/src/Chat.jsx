@@ -11,8 +11,6 @@ export function Chat() {
   const { username, id } = useContext(UserContext);
   const [newMessageText, setNewMessageText] = useState('')
 
-  console.log(username)
-
   useEffect(() => {
     const ws = new WebSocket('ws://localhost:4040')
     setWs(ws);
@@ -31,17 +29,16 @@ export function Chat() {
     const messageData = JSON.parse(ev.data);
     if ('online' in messageData) {
       showOnlinePeopple(messageData.online);
+    } else {
+      console.log({ messageData })
     }
   }
 
   function sendMessage(ev) {
     ev.preventDefault();
-    console.log('sendMessage');
     ws.send(JSON.stringify({
-      message: {
-        recipient: selectUserId,
-        text: newMessageText,
-      }
+      recipient: selectUserId,
+      text: newMessageText,
     }));
   }
 

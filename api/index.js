@@ -102,8 +102,14 @@ wss.on('connection', (connection, req) => {
     }
   }
 
-  connection.on('message', (message) => {
-    console.log(message);
+  connection.on('message', (message, isBinary) => {
+    const messageData = JSON.parse(message.toString());
+    const { recipient, text } = messageData;
+    if (recipient && text) {
+      [...wss.clients]
+        .filter(c => c.userId === recipient)
+        .forEach(c => c.send(JSON.stringify({ text: text })))
+    }
   });
 
   // * Notifica cuando las personas están en linea
