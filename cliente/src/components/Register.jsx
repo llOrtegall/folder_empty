@@ -1,15 +1,29 @@
+import { useState } from 'react'
+
 export function Register() {
+
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
   return (
     <section className="bg-blue-50 h-screen flex items-center">
-      <form className="w-64 mx-auto">
-        <input type="text" placeholder="Usuario"
+      <form className="w-64 mx-auto mb-12">
+
+        <input value={username}
+          onChange={ev => setUsername(ev.target.value)}
+          type="text" placeholder="Usuario"
           className="block w-full rounded-sm p-2 mb-2 border" />
-        <input type="password" placeholder="Contraseña"
+
+        <input value={password}
+          onChange={ev => setPassword(ev.target.value)}
+          type="password" placeholder="Contraseña"
           className="block w-full rounded-sm p-2 mb-2 border" />
+
         <button className="bg-blue-500 text-white block w-full p-2 rounded-md">
-          Registrase
+          Registrarse
         </button>
       </form>
+
     </section>
   )
 } 
