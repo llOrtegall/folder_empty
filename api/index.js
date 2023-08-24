@@ -1,7 +1,7 @@
 import express from 'express'
 import { connect } from 'mongoose'
 import { config } from 'dotenv'
-import { UserModel } from './models/User.JS'
+import { UserModel } from './models/User.js'
 import jwt from 'jsonwebtoken'
 
 config()
