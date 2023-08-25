@@ -2,22 +2,24 @@ import axios from 'axios';
 import { useContext, useState } from 'react'
 import { UserContext } from '../UserContext';
 
-export function Register() {
+export function RegisterAndLoginForm() {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoginOrRegister, setIsLoginOrRegister] = useState('register')
   const { setUsername: setLoggedInUsername, setId } = useContext(UserContext)
 
-  async function register(ev) {
+  async function handleSubmit(ev) {
+    const url = isLoginOrRegister === 'register' ? 'register' : 'login'
     ev.preventDefault()
-    const { data } = await axios.post('/register', { username, password })
+    const { data } = await axios.post(url, { username, password })
     setLoggedInUsername(username)
     setId(data.id)
   }
 
   return (
     <section className="bg-blue-50 h-screen flex items-center">
-      <form className="w-64 mx-auto mb-12" onSubmit={register}>
+      <form className="w-64 mx-auto mb-12" onSubmit={handleSubmit}>
 
         <input value={username}
           onChange={ev => setUsername(ev.target.value)}
@@ -30,8 +32,26 @@ export function Register() {
           className="block w-full rounded-sm p-2 mb-2 border" />
 
         <button type='submit' className="bg-blue-500 text-white block w-full p-2 rounded-md">
-          Registrarse
+          {isLoginOrRegister === 'register' ? 'Register' : 'Login'}
         </button>
+        <div className='text-center mt-2'>
+          {isLoginOrRegister === 'register' && (
+            <div>
+              Already a menber
+              <button onClick={() => setIsLoginOrRegister('login')}>
+                Login Here
+              </button>
+            </div>
+          )}
+          {isLoginOrRegister === 'login' && (
+            <div>
+              Dont have an Account ?
+              <button onClick={() => setIsLoginOrRegister('register')}>
+                Register
+              </button>
+            </div>
+          )}
+        </div>
       </form>
 
     </section>
