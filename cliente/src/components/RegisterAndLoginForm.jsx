@@ -19,7 +19,7 @@ export function RegisterAndLoginForm() {
 
   return (
     <section className="bg-blue-50 h-screen flex items-center">
-      <form className="w-64 mx-auto mb-12" onSubmit={handleSubmit}>
+      <form className="w-72 mx-auto mb-12" onSubmit={handleSubmit}>
 
         <input value={username}
           onChange={ev => setUsername(ev.target.value)}
@@ -32,22 +32,22 @@ export function RegisterAndLoginForm() {
           className="block w-full rounded-sm p-2 mb-2 border" />
 
         <button type='submit' className="bg-blue-500 text-white block w-full p-2 rounded-md">
-          {isLoginOrRegister === 'register' ? 'Register' : 'Login'}
+          {isLoginOrRegister === 'register' ? 'Registrarse' : 'Iniciar Sessión'}
         </button>
         <div className='text-center mt-2'>
           {isLoginOrRegister === 'register' && (
             <div>
-              Already a menber
-              <button onClick={() => setIsLoginOrRegister('login')}>
-                Login Here
+              Ya Estás Registrado ?
+              <button className='ml-2 font-bold' onClick={() => setIsLoginOrRegister('login')}>
+                Iniciar Sessión
               </button>
             </div>
           )}
           {isLoginOrRegister === 'login' && (
             <div>
-              Dont have an Account ?
-              <button onClick={() => setIsLoginOrRegister('register')}>
-                Register
+              No Estás Registrado ?
+              <button className='ml-2 font-bold' onClick={() => setIsLoginOrRegister('register')}>
+                Registrarse
               </button>
             </div>
           )}
