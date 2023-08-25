@@ -74,4 +74,6 @@ app.post('/register', async (req, res) => {
   }
 })
 
-app.listen(4040)
+const server = app.listen(4040)
+
+// TODO: Crearemos el WebSocketServer...
