@@ -6,9 +6,9 @@ export function Register() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  async function register() {
+  async function register(ev) {
+    ev.preventDefault()
     await axios.post('/register', { username, password })
-
   }
 
   return (
@@ -25,7 +25,7 @@ export function Register() {
           type="password" placeholder="Contraseña"
           className="block w-full rounded-sm p-2 mb-2 border" />
 
-        <button className="bg-blue-500 text-white block w-full p-2 rounded-md">
+        <button type='submit' className="bg-blue-500 text-white block w-full p-2 rounded-md">
           Registrarse
         </button>
       </form>
