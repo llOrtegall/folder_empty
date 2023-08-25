@@ -4,7 +4,7 @@ import { config } from 'dotenv'
 import { UserModel } from './models/User.js'
 import cors from 'cors'
 import jwt from 'jsonwebtoken'
-import cookieParser from "cookie-parser"
+import cookieParser from 'cookie-parser'
 
 config()
 connect(process.env.MONGO_URL)
@@ -40,11 +40,10 @@ app.post('/register', async (req, res) => {
   try {
     const createdUser = await UserModel.create({ username, password })
     // TODO: creamos el token
-    jwt.sign({ UserId: createdUser._id }, jwtSecret, {}, (err, token) => {
+    jwt.sign({ UserId: createdUser._id, username }, jwtSecret, {}, (err, token) => {
       if (err) throw err
-      res.cookie('token', token).status(201).json({
-        id: createdUser._id,
-        username
+      res.cookie('token', token, { sameSite: 'none', secure: true }).status(201).json({
+        id: createdUser._id
       })
     })
   } catch (error) {
