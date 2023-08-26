@@ -83,6 +83,8 @@ const wss = new WebSocketServer({ server })
 
 wss.on('connection', (connection, req) => {
   const cookies = req.headers.cookie
+
+  // TODO: Revisa que usuarios están conectados y me trae la informacion mediante el token
   if (cookies) {
     const tokenCookieString = cookies.split(';').find(str => str.startsWith('token='))
     if (tokenCookieString) {
@@ -97,4 +99,6 @@ wss.on('connection', (connection, req) => {
       }
     }
   }
+
+  console.log([...wss.clients].map(c => c.username))
 })
