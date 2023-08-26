@@ -5,7 +5,6 @@ import { Chat } from "./components/Chat";
 
 export function Routes() {
   const { username, id } = useContext(UserContext)
-  console.log(id)
 
   if (username) {
     return (

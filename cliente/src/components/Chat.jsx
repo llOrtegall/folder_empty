@@ -10,8 +10,20 @@ export function Chat() {
     ws.addEventListener('message', handleMessage)
   }, [])
 
+  function showOnLinePeople(peopleArray) {
+    const people = {}
+    peopleArray.forEach(({ userId, username }) => {
+      people[userId] = username;
+    })
+    // console.log(people)
+  }
+
   function handleMessage(ev) {
-    console.log('new message', ev)
+    const messageData = JSON.parse(ev.data)
+    if ('online' in messageData) {
+      showOnLinePeople(messageData.online)
+    }
+    // console.log(messageData.online)
   }
 
   return (

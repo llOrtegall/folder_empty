@@ -63,7 +63,7 @@ app.post('/register', async (req, res) => {
       password: hashedPassword
     })
     // TODO: creamos el token
-    jwt.sign({ UserId: createdUser._id, username }, jwtSecret, {}, (err, token) => {
+    jwt.sign({ userId: createdUser._id, username }, jwtSecret, {}, (err, token) => {
       if (err) throw err
       res.cookie('token', token, { sameSite: 'none', secure: true }).status(201).json({
         id: createdUser._id
@@ -91,14 +91,19 @@ wss.on('connection', (connection, req) => {
       const token = tokenCookieString.split('=')[1]
       if (token) {
         jwt.verify(token, jwtSecret, {}, (err, userData) => {
-          if (err) throw err
+          if (err) { throw err }
           const { userId, username } = userData
           connection.userId = userId
           connection.username = username
+          //console.log(userData)
         })
       }
     }
   }
 
-  console.log([...wss.clients].map(c => c.username))
+  [...wss.clients].forEach(client => {
+    client.send(JSON.stringify({
+      online: [...wss.clients].map(c => ({ userId: c.userId, username: c.username }))
+    }))
+  })
 })
