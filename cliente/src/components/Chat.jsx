@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 import { Avatar } from './Avatar'
 import { Logo } from './Logo';
 import { UserContext } from '../UserContext'
+import { uniqBy } from 'lodash'
 
 export function Chat() {
 
@@ -32,7 +33,7 @@ export function Chat() {
     console.log({ ev, messageData })
     if ('online' in messageData) {
       showOnLinePeople(messageData.online)
-    } else {
+    } else if ('text' in messageData) {
       setMessages(prev => ([...prev, { isOur: false, text: messageData.text }]));
     }
   }
@@ -49,6 +50,9 @@ export function Chat() {
 
   const onlinePeopleExclOurUser = { ...onlinePeople };
   delete onlinePeopleExclOurUser[id];
+
+  const messageWithOutDupes = uniqBy(messages, 'id');
+
 
   return (
     <section className="flex h-screen">
@@ -81,8 +85,8 @@ export function Chat() {
           )}
           {!!selectedUserId && (
             <div>
-              {messages.map(message => (
-                <div>{message.text}</div>
+              {messageWithOutDupes.map(msn => (
+                <div key={msn}>{msn.text}</div>
               ))}
             </div>
           )}
