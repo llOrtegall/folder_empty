@@ -30,8 +30,10 @@ export function Chat() {
     const messageData = JSON.parse(ev.data)
     if ('online' in messageData) {
       showOnLinePeople(messageData.online)
+    } else {
+      console.log({ messageData })
     }
-    // console.log(messageData.online)
+
   }
 
   function sendMessage(ev) {
