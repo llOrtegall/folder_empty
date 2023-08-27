@@ -7,6 +7,7 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import cookieParser from 'cookie-parser'
 import { WebSocketServer } from 'ws'
+import { Message } from './models/Messaje.js'
 
 config()
 connect(process.env.MONGO_URL)
@@ -101,13 +102,23 @@ wss.on('connection', (connection, req) => {
     }
   }
 
-  connection.on('message', (message) => {
+  connection.on('message', async (message) => {
     const messageData = JSON.parse(message.toString())
     const { recipient, text } = messageData
     if (recipient && text) {
+      const messageDoc = await Message.create({
+        sender: connection.userId,
+        recipient,
+        text
+      });
+
       [...wss.clients]
         .filter(c => c.userId === recipient)
-        .forEach(c => c.send(JSON.stringify({ text })))
+        .forEach(c => c.send(JSON.stringify({
+          text,
+          sender: connection.userId,
+          id: messageDoc._id
+        })))
     }
   });
 
