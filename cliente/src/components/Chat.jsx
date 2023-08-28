@@ -34,7 +34,7 @@ export function Chat() {
     if ('online' in messageData) {
       showOnLinePeople(messageData.online)
     } else if ('text' in messageData) {
-      setMessages(prev => ([...prev, { isOur: false, text: messageData.text }]));
+      setMessages(prev => ([...prev, { ...messageData }]));
     }
   }
 
@@ -45,7 +45,11 @@ export function Chat() {
       text: newMessageText
     }));
     setNewMessageText('');
-    setMessages(prev => ([...prev, { text: newMessageText, isOur: true }]));
+    setMessages(prev => ([...prev, {
+      text: newMessageText,
+      sender: id,
+      recipient: selectedUserId
+    }]));
   }
 
   const onlinePeopleExclOurUser = { ...onlinePeople };
@@ -77,36 +81,45 @@ export function Chat() {
         ))}
       </div>
       <div className="flex flex-col bg-blue-100 w-2/3 p-2">
-        <div className="flex-grow">
+        <div className="flex-grow overflow-y-scroll">
           {!selectedUserId && (
             <div className='flex h-full items-center justify-center'>
               <div className='text-gray-400'>&larr; Select a person from de sidebar</div>
             </div>
           )}
           {!!selectedUserId && (
-            <div>
+            <div className=''>
               {messageWithOutDupes.map(msn => (
-                <div key={msn}>{msn.text}</div>
+                <div key={msn} className={`${(msn.sender === id ? 'text-right' : 'text-left')}`}>
+                  < div
+                    className={`text-left inline-block p-2 my-2 rounded-md text-md ${msn.sender === id ? 'bg-blue-500 text-white' : 'bg-white text-gray-500'} `}>
+                    sender:{msn.sender}<br />
+                    my id: {id} <br />
+                    {msn.text}
+                  </div>
+                </div>
               ))}
             </div>
           )}
         </div>
 
-        {!!selectedUserId && (
-          <form className="flex gap-2" onSubmit={sendMessage}>
-            <input type="text"
-              value={newMessageText}
-              onChange={ev => setNewMessageText(ev.target.value)}
-              placeholder="Type your message here"
-              className="bg-white flex-grow border rounded-sm p-2" />
-            <button type='submit' className="bg-blue-500 p-2 rounded-md  text-white ">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
-              </svg>
-            </button>
-          </form>
-        )}
-      </div>
-    </section>
+        {
+          !!selectedUserId && (
+            <form className="flex gap-2" onSubmit={sendMessage}>
+              <input type="text"
+                value={newMessageText}
+                onChange={ev => setNewMessageText(ev.target.value)}
+                placeholder="Type your message here"
+                className="bg-white flex-grow border rounded-sm p-2" />
+              <button type='submit' className="bg-blue-500 p-2 rounded-md  text-white ">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                </svg>
+              </button>
+            </form>
+          )
+        }
+      </div >
+    </section >
   );
 }
