@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { Avatar } from './Avatar'
 import { Logo } from './Logo';
 import { UserContext } from '../UserContext'
@@ -12,6 +12,7 @@ export function Chat() {
   const [newMessageText, setNewMessageText] = useState('');
   const [messages, setMessages] = useState([]);
   const { username, id } = useContext(UserContext)
+  const divUnderMessages = useRef();
 
   useEffect(() => {
     const ws = new WebSocket('ws://localhost:4040')
@@ -53,6 +54,13 @@ export function Chat() {
     }]));
   }
 
+  useEffect(() => {
+    const div = divUnderMessages.current;
+    if (div) {
+      div.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
+  }, [messages]);
+
   const onlinePeopleExclOurUser = { ...onlinePeople };
   delete onlinePeopleExclOurUser[id];
 
@@ -66,7 +74,9 @@ export function Chat() {
         <Logo />
 
         {Object.keys(onlinePeopleExclOurUser).map(userId => (
-          <div onClick={() => setSelectedUserId(userId)} key={userId}
+
+          // eslint-disable-next-line react/jsx-key
+          <div onClick={() => setSelectedUserId(userId)}
             className={`border-b border-gray-100 flex items-center gap-2 cursor-pointer ${(userId === selectedUserId ? 'bg-blue-100' : '')}`}>
             {userId === selectedUserId && (
               <div className='w-1 bg-blue-500 h-12 rounded-r-md'></div>
@@ -82,15 +92,16 @@ export function Chat() {
         ))}
       </div>
       <div className="flex flex-col bg-blue-100 w-2/3 p-2">
-        <div className="flex-grow overflow-y-scroll">
+        <div className="flex-grow">
           {!selectedUserId && (
             <div className='flex h-full items-center justify-center'>
               <div className='text-gray-400'>&larr; Select a person from de sidebar</div>
             </div>
           )}
           {!!selectedUserId && (
-            <div className='relative'>
-              <div className='absolute inset-0'>
+
+            <div className='relative h-full'>
+              <div className='overflow-y-scroll absolute top-0 right-0 bottom-2'>
                 {messageWithOutDupes.map(msn => (
                   <div key={msn} className={`${(msn.sender === id ? 'text-right' : 'text-left')}`}>
                     < div
@@ -101,8 +112,10 @@ export function Chat() {
                     </div>
                   </div>
                 ))}
+                <div ref={divUnderMessages}></div>
               </div>
             </div>
+
           )}
         </div>
 
