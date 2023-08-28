@@ -14,6 +14,8 @@ export function Chat() {
   const { username, id } = useContext(UserContext)
   const divUnderMessages = useRef();
 
+  console.log(username)
+
   useEffect(() => {
     const ws = new WebSocket('ws://localhost:4040')
     setWs(ws)
@@ -66,22 +68,17 @@ export function Chat() {
 
   const messageWithOutDupes = uniqBy(messages, 'id');
 
-
   return (
     <section className="flex h-screen">
       <div className="bg-white w-1/3">
-
         <Logo />
-
         {Object.keys(onlinePeopleExclOurUser).map(userId => (
-
           // eslint-disable-next-line react/jsx-key
           <div onClick={() => setSelectedUserId(userId)}
             className={`border-b border-gray-100 flex items-center gap-2 cursor-pointer ${(userId === selectedUserId ? 'bg-blue-100' : '')}`}>
             {userId === selectedUserId && (
               <div className='w-1 bg-blue-500 h-12 rounded-r-md'></div>
             )}
-
             <div className='flex gap-2 py-2 pl-4 items-center'>
               <Avatar username={onlinePeople[userId]} userId={userId} />
               <span className='text-gray-800 font-semibold'>
@@ -99,7 +96,6 @@ export function Chat() {
             </div>
           )}
           {!!selectedUserId && (
-
             <div className='relative h-full'>
               <div className='overflow-y-scroll absolute top-0 right-0 bottom-2'>
                 {messageWithOutDupes.map(msn => (
@@ -115,10 +111,8 @@ export function Chat() {
                 <div ref={divUnderMessages}></div>
               </div>
             </div>
-
           )}
         </div>
-
         {
           !!selectedUserId && (
             <form className="flex gap-2" onSubmit={sendMessage}>
