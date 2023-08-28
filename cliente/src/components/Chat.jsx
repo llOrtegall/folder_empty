@@ -89,17 +89,19 @@ export function Chat() {
             </div>
           )}
           {!!selectedUserId && (
-            <div className=''>
-              {messageWithOutDupes.map(msn => (
-                <div key={msn} className={`${(msn.sender === id ? 'text-right' : 'text-left')}`}>
-                  < div
-                    className={`text-left inline-block p-2 my-2 rounded-md text-md ${msn.sender === id ? 'bg-blue-500 text-white' : 'bg-white text-gray-500'} `}>
-                    sender:{msn.sender}<br />
-                    my id: {id} <br />
-                    {msn.text}
+            <div className='relative'>
+              <div className='absolute inset-0'>
+                {messageWithOutDupes.map(msn => (
+                  <div key={msn} className={`${(msn.sender === id ? 'text-right' : 'text-left')}`}>
+                    < div
+                      className={`text-left inline-block p-2 my-2 rounded-md text-md ${msn.sender === id ? 'bg-blue-500 text-white' : 'bg-white text-gray-500'} `}>
+                      sender:{msn.sender}<br />
+                      my id: {id} <br />
+                      {msn.text}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           )}
         </div>
