@@ -12,10 +12,8 @@ export function Chat() {
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [newMessageText, setNewMessageText] = useState('');
   const [messages, setMessages] = useState([]);
-  const { username, id } = useContext(UserContext)
+  const { id } = useContext(UserContext)
   const divUnderMessages = useRef();
-
-  console.log(username)
 
   useEffect(() => {
     connecToWs()
@@ -38,13 +36,11 @@ export function Chat() {
     peopleArray.forEach(({ userId, username }) => {
       people[userId] = username;
     })
-    // console.log(people)
     setOnlinePeople(people)
   }
 
   function handleMessage(ev) {
     const messageData = JSON.parse(ev.data)
-    console.log({ ev, messageData })
     if ('online' in messageData) {
       showOnLinePeople(messageData.online)
     } else if ('text' in messageData) {
@@ -92,8 +88,8 @@ export function Chat() {
       <div className="bg-white w-1/3">
         <Logo />
         {Object.keys(onlinePeopleExclOurUser).map(userId => (
-          // eslint-disable-next-line react/jsx-key
-          <div onClick={() => setSelectedUserId(userId)}
+
+          <div key={userId} onClick={() => setSelectedUserId(userId)}
             className={`border-b border-gray-100 flex items-center gap-2 cursor-pointer ${(userId === selectedUserId ? 'bg-blue-100' : '')}`}>
             {userId === selectedUserId && (
               <div className='w-1 bg-blue-500 h-12 rounded-r-md'></div>
@@ -118,7 +114,7 @@ export function Chat() {
             <div className='relative h-full'>
               <div className='overflow-y-scroll absolute top-0 right-0 bottom-2'>
                 {messageWithOutDupes.map(msn => (
-                  <div key={msn} className={`${(msn.sender === id ? 'text-right' : 'text-left')}`}>
+                  <div key={msn._id} className={`${(msn.sender === id ? 'text-right' : 'text-left')}`}>
                     < div
                       className={`text-left inline-block p-2 my-2 rounded-md text-md ${msn.sender === id ? 'bg-blue-500 text-white' : 'bg-white text-gray-500'} `}>
                       {msn.text}
