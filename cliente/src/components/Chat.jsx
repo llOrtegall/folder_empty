@@ -63,7 +63,7 @@ export function Chat() {
       text: newMessageText,
       sender: id,
       recipient: selectedUserId,
-      id: Date.now(),
+      _id: Date.now(),
     }]));
   }
 
@@ -77,8 +77,7 @@ export function Chat() {
   useEffect(() => {
     if (selectedUserId) {
       axios.get('/messages/' + selectedUserId).then(res => {
-        const { data } = res;
-
+        setMessages(res.data);
       })
     }
   }, [selectedUserId]);
@@ -86,7 +85,7 @@ export function Chat() {
   const onlinePeopleExclOurUser = { ...onlinePeople };
   delete onlinePeopleExclOurUser[id];
 
-  const messageWithOutDupes = uniqBy(messages, 'id');
+  const messageWithOutDupes = uniqBy(messages, '_id');
 
   return (
     <section className="flex h-screen">
@@ -122,8 +121,6 @@ export function Chat() {
                   <div key={msn} className={`${(msn.sender === id ? 'text-right' : 'text-left')}`}>
                     < div
                       className={`text-left inline-block p-2 my-2 rounded-md text-md ${msn.sender === id ? 'bg-blue-500 text-white' : 'bg-white text-gray-500'} `}>
-                      sender:{msn.sender}<br />
-                      my id: {id} <br />
                       {msn.text}
                     </div>
                   </div>
