@@ -106,17 +106,17 @@ export function Chat() {
       <div className="flex flex-col bg-blue-100 w-2/3 p-2">
         <div className="flex-grow">
           {!selectedUserId && (
-            <div className='flex h-full items-center justify-center'>
+            <div className='flex h-full flex-grow items-center justify-center'>
               <div className='text-gray-400'>&larr; Select a person from de sidebar</div>
             </div>
           )}
           {!!selectedUserId && (
             <div className='relative h-full'>
-              <div className='overflow-y-scroll absolute top-0 right-0 bottom-2'>
+              <div className="overflow-y-scroll absolute top-0 left-0 right-0 bottom-2">
                 {messageWithOutDupes.map(msn => (
-                  <div key={msn._id} className={`${(msn.sender === id ? 'text-right' : 'text-left')}`}>
+                  <div key={msn._id} className={(msn.sender === id ? 'text-right' : 'text-left')}>
                     < div
-                      className={`text-left inline-block p-2 my-2 rounded-md text-md ${msn.sender === id ? 'bg-blue-500 text-white' : 'bg-white text-gray-500'} `}>
+                      className={"text-left inline-block p-2 my-2 rounded-md text-sm " + (msn.sender === id ? 'bg-blue-500 text-white' : 'bg-white text-gray-500')}>
                       {msn.text}
                     </div>
                   </div>
@@ -126,22 +126,20 @@ export function Chat() {
             </div>
           )}
         </div>
-        {
-          !!selectedUserId && (
-            <form className="flex gap-2" onSubmit={sendMessage}>
-              <input type="text"
-                value={newMessageText}
-                onChange={ev => setNewMessageText(ev.target.value)}
-                placeholder="Type your message here"
-                className="bg-white flex-grow border rounded-sm p-2" />
-              <button type='submit' className="bg-blue-500 p-2 rounded-md  text-white ">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
-                </svg>
-              </button>
-            </form>
-          )
-        }
+        {!!selectedUserId && (
+          <form className="flex gap-2" onSubmit={sendMessage}>
+            <input type="text"
+              value={newMessageText}
+              onChange={ev => setNewMessageText(ev.target.value)}
+              placeholder="Type your message here"
+              className="bg-white flex-grow border rounded-sm p-2" />
+            <button type='submit' className="bg-blue-500 p-2 rounded-md  text-white ">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+              </svg>
+            </button>
+          </form>
+        )}
       </div >
     </section >
   );
