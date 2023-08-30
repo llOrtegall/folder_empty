@@ -78,6 +78,15 @@ export function Chat() {
     }
   }, [selectedUserId]);
 
+  useEffect(() => {
+    axios.get('/people').then(res => {
+      const offlinePeople = res.data
+        .filter(p => p._id !== id)
+        .filter(p => !Object.keys(onlinePeople).includes(p._id))
+      console.log(offlinePeople);
+    })
+  }, [onlinePeople])
+
   const onlinePeopleExclOurUser = { ...onlinePeople };
   delete onlinePeopleExclOurUser[id];
 
