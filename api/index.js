@@ -1,3 +1,5 @@
+/* eslint-disable semi */
+/* eslint-disable space-before-function-paren */
 import express from 'express'
 import { connect } from 'mongoose'
 import { config } from 'dotenv'
@@ -112,8 +114,31 @@ const server = app.listen(4040)
 
 // TODO: Crearemos el WebSocketServer...
 const wss = new WebSocketServer({ server })
-
 wss.on('connection', (connection, req) => {
+  function notifyAboutOnlinePeople() {
+    // TODO: para ver los usuarios conetados
+    [...wss.clients].forEach(client => {
+      client.send(JSON.stringify({
+        online: [...wss.clients].map(c => ({ userId: c.userId, username: c.username }))
+      }));
+    })
+  }
+
+  connection.isAlive = true;
+
+  connection.timer = setInterval(() => {
+    connection.ping();
+    connection.deathTimer = setTimeout(() => {
+      connection.isAlive = false;
+      connection.terminate();
+      notifyAboutOnlinePeople();
+    }, 1000)
+  }, 5000);
+
+  connection.on('pong', () => {
+    clearTimeout(connection.deathTimer)
+  });
+
   const cookies = req.headers.cookie
 
   // TODO: Revisa que usuarios están conectados y me trae la informacion mediante el token
@@ -153,10 +178,5 @@ wss.on('connection', (connection, req) => {
     }
   });
 
-  // TODO: para ver los usuarios conetados
-  [...wss.clients].forEach(client => {
-    client.send(JSON.stringify({
-      online: [...wss.clients].map(c => ({ userId: c.userId, username: c.username }))
-    }))
-  })
+  notifyAboutOnlinePeople();
 })
