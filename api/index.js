@@ -86,6 +86,10 @@ app.post('/login', async (req, res) => {
         })
     }
   }
+});
+
+app.post('/logout', (req, res) => {
+  res.cookie('token', ' ', { sameSite: 'none', secure: true }).json('ok')
 })
 
 // TODO: para realizar el registro de los usuarios

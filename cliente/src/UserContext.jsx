@@ -6,16 +6,16 @@ export const UserContext = createContext({})
 // eslint-disable-next-line react/prop-types
 export function UserContextProvider({ children }) {
   const [username, setUsername] = useState(null)
-  const [id, setid] = useState(null)
+  const [id, setId] = useState(null)
   useEffect(() => {
     axios.get('/profile').then(response => {
-      setid(response.data.userId);
+      setId(response.data.userId);
       setUsername(response.data.username);
     })
   }, [])
 
   return (
-    <UserContext.Provider value={{ username, setUsername, id, setid }}>
+    <UserContext.Provider value={{ username, setUsername, id, setId }}>
       {children}
     </UserContext.Provider>
   )
