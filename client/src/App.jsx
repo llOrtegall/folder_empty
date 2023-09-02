@@ -1,8 +1,9 @@
+import Registro from "./Registro"
+
 function App() {
 
   return (
-    <>
-    </>
+    <Registro />
   )
 }
 
