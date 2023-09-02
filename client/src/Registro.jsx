@@ -8,7 +8,7 @@ function Registro() {
 
   async function registrarse(ev) {
     ev.preventDefault();
-    const { data } = await axios.post('/registro', { usuario, contrasena });
+    const { data } = await axios.post('/registros', { usuario, contrasena });
     console.log(data);
   }
 

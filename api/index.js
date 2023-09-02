@@ -12,9 +12,10 @@ mongoose.connect(process.env.MONGO_URL);
 const jwtSecret = process.env.JWT_SECRET;
 
 const app = expresss();
+app.use(expresss.json());
 app.use(cors({
   credentials: true,
-  origin: process.env.CLIENT_URL
+  origin: process.env.CLIENTE_URL
 }));
 const PORT = process.env.PORT ?? 4040;
 
@@ -23,7 +24,7 @@ app.get('/test', (req, res) => {
 });
 
 // TODO: Ruta para crear un usuario y loguearlo automáticamente
-app.post('/registro', async (req, res) => {
+app.post('/registros', async (req, res) => {
   const { usuario, contrasena } = req.body;
   const createUser = await User.create({ usuario, contrasena });
 
