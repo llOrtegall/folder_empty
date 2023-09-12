@@ -48,7 +48,8 @@ export function Chat() {
     setMessages(prev => ([...prev, {
       text: newMessageText,
       sender: id,
-      recipient: selectedUserId
+      recipient: selectedUserId,
+      id: Date.now(),
     }]));
   }
 
