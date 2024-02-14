@@ -7,7 +7,8 @@ export const UsersRoutes = Router();
 UsersRoutes.get('/user/:id', async (req: any, res: any) => {
   try {
     const id = parseInt(req.params.id)
-    const user = await db.users.getById(id)
+    const [user] = await db.users.getById(id)
+    if(!user) return res.status(404).json({ error: 'User not found or not exist !' })
     return res.status(200).json(user)
   } catch (error) {
     return res.status(500).json({ error })
