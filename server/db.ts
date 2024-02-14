@@ -32,7 +32,7 @@ const ModifyQuery = async (queryString: string): Promise<ResultSetHeader> => {
   const [results] = await pool.execute(queryString)
   return results as ResultSetHeader
 }
-
+  
 // ModifyQuery('INSERT INTO usuarios (nombre, correo) VALUES ("Ivan Ortega", "IvanOrtega@example.com")')
 //   .then((result) => console.log(result))
 //   .catch((err) => console.error(err))
@@ -47,3 +47,15 @@ const ModifyQuery = async (queryString: string): Promise<ResultSetHeader> => {
 //    })
 //   .catch((err) => { console.error(err) })
 
+// Good practice to put into an api  endpoint !
+function getAllUser(){
+  return SelectQuery<IUserRow>('SELECT * FROM usuarios')
+}
+
+getAllUser()
+  .then((users) => {
+    users.forEach((user) => {
+      const { id, nombre, correo } = user
+      console.log(`id: ${id}, nombre: ${nombre}, correo: ${correo}`)
+    })
+  }).catch((err) => {console.log(err)});
