@@ -16,11 +16,17 @@ interface IUserRow extends RowDataPacket {
   correo: string
 }
 
-async function SelectQuery<T>(queryString: string): Promise<any> {
+// async function SelectQuery<T>(queryString: string): Promise<T[]> {
+//   const [results] = await pool.execute(queryString) // TODO: desctructure the results
+//   return results as T[];
+// }
+
+const SelectQuery = async <T>(queryString: string): Promise<T[]> => {
   const [results] = await pool.execute(queryString) // TODO: desctructure the results
-  return results;
+  return results as T[];
 }
 
-SelectQuery('SELECT * FROM usuarios')
-  .then((results) => {console.log(results)})
-  .catch((err) => {console.log(err)})
+SelectQuery<IUserRow>('SELECT * FROM usuarios')
+  .then((users) => { console.log(users) })
+  .catch((err) => { console.error(err) })
+
